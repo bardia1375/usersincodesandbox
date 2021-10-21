@@ -11,14 +11,31 @@ const Users = () => {
       // setState({ users: response.data.data });
       setTimeout(() => {
         setState({ users: response.data.data });
-      }, 3000);
+      }, 500);
     }
     fetchMyAPI();
   }, []);
 
-  const handleCreate = () => {};
-  const handleUpdata = (user) => {};
-  const handleDelete = (user) => {};
+  const handleCreate = async () => {
+    const newUser = {
+      id: 6,
+      email: "tracey.ramos@reqres.in",
+      first_name: "Tracey",
+      last_name: "Ramos",
+      avatar: "https://reqres.in/img/faces/6-image.jpg"
+    };
+    const respon = await axios.post(`https://reqres.in/api/users`, newUser);
+    console.log(respon.data);
+    setState({ users: [...state.users, respon.data] });
+  };
+
+  const handleUpdata = (index) => {
+    console.log(index);
+  };
+
+  const handleDelete = (user) => {
+    console.log(user);
+  };
 
   return (
     <>
@@ -45,13 +62,13 @@ const Users = () => {
                 <div className="row">
                   <div className="col-6">
                     <button
-                      onClick={handleUpdata}
+                      onClick={() => handleUpdata(index)}
                       className="btn btn-info btn-sm "
                     >
                       Update
                     </button>
                     <button
-                      onClick={handleDelete}
+                      onClick={() => handleDelete(user)}
                       className="btn btn-danger btn-sm "
                     >
                       Delete
