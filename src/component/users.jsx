@@ -18,7 +18,7 @@ const Users = () => {
 
   const handleCreate = async () => {
     const newUser = {
-      id: 6,
+      id: 5,
       email: "tracey.ramos@reqres.in",
       first_name: "Tracey",
       last_name: "Ramos",
