@@ -1,21 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-class Users extends React.Component {
-  state = {
-    users: []
-  };
-  async componentDidMount() {
-    const response = await axios.get("https://reqres.in/api/users");
-    this.setState({ users: response.data.data });
-  }
-  render() {
-    return (
-      <>
-        <button onClick={this.handleCreate} className="btn btn-lg btn-primary">
-          Create
-        </button>
-        <div className="row">
-          {this.state.users.map((user, index) => {
+import LoadingUsers from "./loading/loadingUser";
+const Users = () => {
+  const [state, setState] = useState({ users: [] });
+  const [loading, setLoading] = useState({ users: [], isLoading: false });
+
+  useEffect(() => {
+    async function fetchMyAPI() {
+      const response = await axios.get("https://reqres.in/api/users");
+      // setState({ users: response.data.data });
+      setTimeout(() => {
+        setState({ users: response.data.data });
+      }, 3000);
+    }
+    fetchMyAPI();
+  }, []);
+
+  const handleCreate = () => {};
+  const handleUpdata = (user) => {};
+  const handleDelete = (user) => {};
+
+  return (
+    <>
+      <button onClick={handleCreate} className="btn btn-lg btn-primary">
+        Create
+      </button>
+      <div className="row">
+        {loading.isLoading ? (
+          <LoadingUsers />
+        ) : (
+          state.users.map((user, index) => {
             return (
               <div className="col-4 text-center p-5" key={index}>
                 <img
@@ -31,13 +45,13 @@ class Users extends React.Component {
                 <div className="row">
                   <div className="col-6">
                     <button
-                      onClick={this.handleUpdata}
+                      onClick={handleUpdata}
                       className="btn btn-info btn-sm "
                     >
                       Update
                     </button>
                     <button
-                      onClick={this.handleDelete}
+                      onClick={handleDelete}
                       className="btn btn-danger btn-sm "
                     >
                       Delete
@@ -46,13 +60,10 @@ class Users extends React.Component {
                 </div>
               </div>
             );
-          })}
-        </div>
-      </>
-    );
-  }
-  handleCreate = () => {};
-  handleUpdata = (user) => {};
-  handleDelete = (user) => {};
-}
+          })
+        )}
+      </div>
+    </>
+  );
+};
 export default Users;
